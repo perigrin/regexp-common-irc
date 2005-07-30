@@ -47,14 +47,19 @@ pattern name => [qw(IRC letter -keep)],
 	create => qq/(?k:$letter)/,
 ;
 
-my $special = '[\[\]\\\'\_\^\{\|\}]';
-pattern name => [qw(IRC special -keep)],
-	create => qq/(?k:$special)/,
-;
-
 my $digit = '[0-9]';
 pattern name => [qw(IRC digit -keep)],
 	create => qq/(?k:$digit)/,
+;
+
+my $hexdigit = "(?:$digit|[A-F])";
+pattern name => [qw(IRC hexdigit -keep)],
+	create => qq/(?k:$hexdigit)/,
+;
+
+my $special = '[\x{5B}-\x{60}\x{7B}\x{7D}]';
+pattern name => [qw(IRC special -keep)],
+	create => qq/(?k:$special)/,
 ;
 
 my $chanstring = '(?:[^\s,:\a\f\r]){1,29}';
@@ -71,13 +76,7 @@ my $user = '';
 my $key = '';
 
 
-my $hexdigit = "(?:$digit|[A-F])";
-pattern name => [qw(IRC hexdigit -keep)],
-	create => qq/(?k:$hexdigit)/,
-;
-
-
-my $nick = "(?:$letter|$special)(?:$letter|$digit|$special){0,8}";
+my $nick = "(?:$letter|$special)(?:$letter|$digit|$special){0,8}?";
 pattern name  => [qw(IRC nick -keep)],
 	create => qq/(?k:$nick)/, 
 ; 
