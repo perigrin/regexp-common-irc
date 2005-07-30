@@ -4,7 +4,10 @@ use strict;
 use Regexp::Common qw(pattern clean no_defaults);
 
 # based upon Section 2.3.1 of RFC 2812 (http://www.irchelp.org/irchelp/rfc/rfc2812.txt)
-=head EBNF
+=pod 
+
+=head EBNF for IRC
+
     target     =  nickname / server
     msgtarget  =  msgto *( "," msgto )
     msgto      =  channel / ( user [ "%" host ] "@" servername )
@@ -36,6 +39,7 @@ use Regexp::Common qw(pattern clean no_defaults);
     hexdigit   =  digit / "A" / "B" / "C" / "D" / "E" / "F"
     special    =  %x5B-60 / %x7B-7D
                ; "[", "]", "\", "`", "_", "^", "{", "|", "}"
+
 =cut
 
 my $letter = '[A-Za-z]';
