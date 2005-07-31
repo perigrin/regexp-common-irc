@@ -62,15 +62,6 @@ pattern name => [qw(IRC special -keep)],
 	create => qq/(?k:$special)/,
 ;
 
-my $chanstring = '(?:[^\s,:\a\f\r]){1,29}';
-pattern name => [qw(IRC chanstring -keep)],
-	create => qq/(?k:$chanstring)/,
-;
-
-my $channelid = "(?:[A-Z]|$digit){5}";
-pattern name => [qw(IRC channelid -keep)],
-	create => qq/(?k:$channelid)/,
-;
 
 my $user = '(?:[\x{01}-\x{09}\x{0B}-\x{0C}\x{0E}-\x{1F}\x{21}-\x{3F}\x{41}-\x{FF}])?';
 pattern name => [qw(IRC user -keep)],
@@ -81,14 +72,112 @@ my $key = '(?:[\x{01}-\x{05}\x{07}-\x{08}\x{0C}\x{0E}-\x{1F}\x{21}-\x{7F}]{1,23}
 pattern name => [qw(IRC key -keep)],
 	create => qq/(?k:$key)/,
 ;
+
+my $chanstring = '[\x{01}-\x{07}\x{08}-\x{09}\x{0B}-\x{0C}\x{0E}-\x{1F}\x{21}-\x{2B}';
+   $chanstring .= '\x{2D}-\x{39}\x{3B}-\x{FF}]{1,29}';
+pattern name => [qw(IRC chanstring -keep)],
+	create => qq/(?k:$chanstring)/,
+;
+
+my $channelid = "(?:[A-Z]|$digit){5}";
+pattern name => [qw(IRC channelid -keep)],
+	create => qq/(?k:$channelid)/,
+;
+
+
+my $nowild = "(?:[\x{01}-\x{29}\x{2B}-\x{3E}\x{40}-\x{FF}])";
+pattern name => [qw(IRC mask nowild -keep)],
+	create => qq/(?k:$nowild)/,
+;
+
+my $noesc = "(?:[\x{01}-\x{5B}\x{5D}-\x{FF}])";
+pattern name => [qw(IRC mask noesc -keep)],
+	create => qq/(?k:$noesc)/,
+;
+
+my $wildone = "(?:\x{3F})";
+pattern name => [qw(IRC mask wildone -keep)],
+	create => qq/(?k:$wildone)/,
+;
+
+my $wildmany = "(?:\s{2A})";
+pattern name => [qw(IRC mask wildmany -keep)],
+	create => qq/(?k:$wildmany)/,
+;
+
+my $mask = "(?:$nowild|$noesc|$wildone|$noesc$wildmany)*";
+pattern name => [qw(IRC mask -keep)],
+	create => qq/(?k:$mask)/,
+;
+
+my $targetmask =  "(?:(?:\$|\#)$mask)";
+pattern name => [qw(IRC targetmask -keep)],
+	create => qq/(?k:$targetmask)/,
+;
+
+
 my $nick = "(?:$letter|$special)(?:$letter|$digit|$special){0,8}";
 pattern name  => [qw(IRC nick -keep)],
 	create => qq/(?k:$nick)/, 
 ; 
 
-my $channel =  "(?:[#+&]|(?:!$channelid)):?$chanstring";
+my $shortname = "(?:$letter|$digit)(?:$letter|$digit|\-)*(?:$letter|$digit)*";
+pattern name => [qw(IRC shortname -keep)],
+	create => qq/(?k:$shortname)/,
+;
+
+my $hostname = "(?:$shortname(?:\.$shortname)*)";
+pattern name => [qw(IRC hostname -keep)],
+	create => qq/(?k:$hostname)/,
+;
+
+my $ip4addr =  "(?:$digit){1,3}\.(?:$digit){1,3}\.(?:$digit){1,3}\.(?:$digit){1,3})";
+pattern name => [qw(IRC ip4addr -keep)],
+	create => qq/(?k:$ip4addr)/,
+;
+
+my $ip6addr  =  "(?:(?:$hexdigit(?:\:$hexdigit){7})";
+   $ip6addr .=  "|(?:0\:0\:0\:0\:0\:(?:0|FFFF)\:$ip4addr))";
+pattern name => [qw(IRC ip6addr -keep)],
+	create => qq/(?k:$ip6addr)/,
+;
+  
+my $hostaddr   =  "(?:$ip4addr|$ip6addr)";
+pattern name => [qw(IRC hostaddr -keep)],
+	create => qq/(?k:$hostaddr)/,
+;
+
+my $host = "(?:$hostname|$hostaddr)";
+pattern name => [qw(IRC host -keep)],
+	create => qq/(?k:$host)/,
+;
+
+my $server = $hostname;
+pattern name => [qw(IRC server -keep)],
+	create => qq/(?k:$server)/,
+;
+
+my $channel =  "(?:[#+&]|!$channelid)$chanstring(?:\:$chanstring)?";
 pattern name => [qw(IRC channel -keep)],
 	create => qq/(?k:$channel)/,
 ; 
+
+my $msgto  = "(?:$channel|(?:$user\[\%$host\]\@$server))";
+   $msgto .= "|(?:$user\%$host)|$targetmask";
+   $msgto .= "|(?:$nick|(?:$nick!$user\@$host))";
+pattern name => [qw(IRC msgto -keep)],
+	create => qq/(?k:$msgto)/,
+;
+   
+my $msgtarget = "(?:$msgto(?:,$msgto)*)";
+pattern name => [qw(IRC msgtarget -keep)],
+	create => qq/(?k:$msgtarget)/,
+;
+
+my $target = "(?:$nick|$server)";
+pattern name => [qw(IRC target -keep)],
+	create => qq/(?k:$target)/,
+;
+
 
 1;
