@@ -72,11 +72,16 @@ pattern name => [qw(IRC channelid -keep)],
 	create => qq/(?k:$channelid)/,
 ;
 
-my $user = '';
-my $key = '';
+my $user = '(?:[\x{01}-\x{09}\x{0B}-\x{0C}\x{0E}-\x{1F}\x{21}-\x{3F}\x{41}-\x{FF}])?';
+pattern name => [qw(IRC user -keep)],
+	create => qq/(?k:$user)/,
+;
 
-
-my $nick = "(?:$letter|$special)(?:$letter|$digit|$special){0,8}?";
+my $key = '(?:[\x{01}-\x{05}\x{07}-\x{08}\x{0C}\x{0E}-\x{1F}\x{21}-\x{7F}]{1,23})';
+pattern name => [qw(IRC key -keep)],
+	create => qq/(?k:$key)/,
+;
+my $nick = "(?:$letter|$special)(?:$letter|$digit|$special){0,8}";
 pattern name  => [qw(IRC nick -keep)],
 	create => qq/(?k:$nick)/, 
 ; 

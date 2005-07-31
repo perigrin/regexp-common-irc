@@ -11,9 +11,10 @@ like($_, qr($RE{IRC}{channel}), "channel: $_") for qw(
 	#axkit-dahut
 );
 
-'Flexo: summon perigrin' =~ /$RE{IRC}{nick}{-keep}: summon $RE{IRC}{nick}{-keep}/;
+'Flexo: summon perigrin to #axkit' =~ /$RE{IRC}{nick}{-keep}: summon $RE{IRC}{nick}{-keep} (?:to $RE{IRC}{channel}{-keep})?/;
 is($1, 'Flexo');
 is($2, 'perigrin');
+is($3, '#axkit');
 1;
 __DATA__
 perigrin
