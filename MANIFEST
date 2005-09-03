@@ -4,7 +4,12 @@ MANIFEST
 META.yml # Will be created by "make dist"
 Makefile.PL
 README
-lib/Regexp/Common/IRC2.pm
+lib/Regexp/Common/IRC.pm
 t/00.load.t
+t/01_nicks.t
+t/02_channels.t
+t/0x_bots.t
+t/channels
+t/nicks
 t/pod-coverage.t
-t/pod.t
+t/pod.t   
