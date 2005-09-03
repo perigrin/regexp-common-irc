@@ -9,7 +9,6 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Regexp/Common/IRC.pm',
     requires => {
         'Test::More' => 0,
-        'version'    => 0,
     },
     add_to_cleanup      => [ 'Regexp-Common-IRC-*' ],
 );
