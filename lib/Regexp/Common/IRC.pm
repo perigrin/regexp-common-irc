@@ -6,7 +6,30 @@ use Regexp::Common qw(pattern clean no_defaults);
 # based upon Section 2.3.1 of RFC 2812 (http://www.irchelp.org/irchelp/rfc/rfc2812.txt)
 =pod 
 
-=head EBNF for IRC
+=head1 NAME
+
+Regexp::Common::IRC -- provide patterns for parsing IRC messages
+
+=head1 SYNOPSIS
+
+	use Regexp::Common qw(IRC);
+	
+	sub trigger {
+        	my ($self, $msg) = @_;
+        	my $CMD = qr/^summon[:,]?
+                	     \s*$RE{IRC}{nick}{-keep}\s*
+                     	     (?:to\s*$RE{IRC}{channel}{-keep})?
+                     	     [?.!]*
+                   	   /ix;
+        	if ($msg =~ $CMD) {
+                	$self->{who} = $1;
+                	$self->{to} = $2;
+                	return 1;
+        	}
+        	return 0;
+	} 
+ 
+=head1 EBNF for IRC
 
     target     =  nickname / server
     msgtarget  =  msgto *( "," msgto )
@@ -179,5 +202,21 @@ pattern name => [qw(IRC target -keep)],
 	create => qq/(?k:$target)/,
 ;
 
+=head1 SEE ALSO
+
+L<Regexp::Common> for a general description of how to use this interface.
+
+=head1 MAINTAINANCE
+
+This package is maintained by Chris Prather S<(I<cpan@prather.org>)>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2005, Chris Prather. All Rights Reserved. 
+This module is free software. It may be used, redistributed
+and/or modified under the terms of the Perl Artistic License (see
+L<http://www.perl.com/perl/misc/Artistic.html>)
+
+=cut
 
 1;
