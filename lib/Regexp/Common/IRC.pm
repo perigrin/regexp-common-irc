@@ -3,12 +3,12 @@ $VERSION = 0.01;
 use strict;
 use Regexp::Common qw(pattern clean no_defaults);
 
-# based upon Section 2.3.1 of RFC 2812 (http://www.irchelp.org/irchelp/rfc/rfc2812.txt)
+
 =pod 
 
 =head1 NAME
 
-Regexp::Common::IRC -- provide patterns for parsing IRC messages
+Regexp::Common::IRC - provide patterns for parsing IRC messages
 
 =head1 SYNOPSIS
 
@@ -30,6 +30,9 @@ Regexp::Common::IRC -- provide patterns for parsing IRC messages
 	} 
  
 =head1 EBNF for IRC
+
+based upon Section 2.3.1 of RFC 2812
+(L<http://www.irchelp.org/irchelp/rfc/rfc2812.txt>)
 
     target     =  nickname / server
     msgtarget  =  msgto *( "," msgto )
