@@ -100,7 +100,7 @@ pattern name => [qw(IRC mask wildone -keep)],
 	create => qq/(?k:$wildone)/,
 ;
 
-my $wildmany = "(?:\s{2A})";
+my $wildmany = "(?:\x{2A})";
 pattern name => [qw(IRC mask wildmany -keep)],
 	create => qq/(?k:$wildmany)/,
 ;

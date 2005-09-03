@@ -7,6 +7,7 @@ like($_, qr($RE{IRC}{nick}), "nick: $_") for qw(
 	perigrin
 );
 
+no warnings;
 like($_, qr($RE{IRC}{channel}), "channel: $_") for qw(
 	#axkit-dahut
 );
