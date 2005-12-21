@@ -1,5 +1,5 @@
 package Regexp::Common::IRC;
-$VERSION = 0.01;
+$VERSION = 0.02;
 use strict;
 use Regexp::Common qw(pattern clean no_defaults);
 
